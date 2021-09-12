@@ -1,6 +1,4 @@
-*,
-*::before,
-*::after {
+@import './messages.css' *, *: : before, *: : after {
   margin: 0;
   border: 0;
   box-sizing: border-box;
