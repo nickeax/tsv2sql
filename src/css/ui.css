@@ -6,7 +6,16 @@ form {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   margin-bottom: 2rem;
+}
+select,
+option {
+  color: black;
+  padding: 5px;
+}
+select option {
+  padding: 2px;
 }
 
 button {
@@ -54,4 +63,8 @@ textarea {
 
 input::placeholder {
   color: hsl(0, 0%, 77%);
+}
+
+.hidden {
+  display: none;
 }

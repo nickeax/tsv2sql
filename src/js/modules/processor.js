@@ -6,6 +6,8 @@ export class Processor {
   #data
   #headersInput
   #dataInput
+  #delimeter
+  #delimeterType
   #process
   #clear
   #externalTableRef
@@ -16,9 +18,11 @@ export class Processor {
 
   constructor() {
     this.#headersInput = document.querySelector('#headersInput')
+    this.#headersInput.classList.add('hidden')
     this.#tableName = document.querySelector('#tableName')
     this.#mode = document.querySelector('#mode')
     this.#dataInput = document.querySelector('#TSVDataInput')
+    this.#delimeter = document.querySelector('#delimeter')
     this.#process = document.querySelector('#process')
     this.#clear = document.querySelector('#clear')
     this.#addETR = document.querySelector('#addETR')
@@ -26,15 +30,21 @@ export class Processor {
     this.#externalTableRef = document.querySelector('#externalTableRef')
     this.#etrHeading = document.querySelector('#etrHeading')
 
+    this.#delimeter.addEventListener('input', e => this.#updateDelimeter(e))
     this.#process.addEventListener('click', e => this.#processData(e))
     this.#clear.addEventListener('click', e => this.#clearForm(e))
     this.#addETR.addEventListener('click', e => this.addETR(e))
   }
 
-  addHeaders(str) {
-    this.#headers = str.split(' ')
+  #updateDelimeter(e) {
+    switch (this.#delimeter.value) {
+      case 'tabs': this.#delimeterType = '\t'
+        break
+      case 'commas': this.#delimeterType = ','
+        break
+    }
+    console.log(this.#delimeterType);
   }
-
   // External Table Reference Management
   addETR(e) {
     e.preventDefault()
@@ -95,6 +105,7 @@ export class Processor {
       this.#headers = this.#headersInput.value.split('\t')
     } else if (this.#dataInput.value != '') {
       this.#processHeaders()
+      this.#headersInput.classList.toggle('hidden')
       this.#processBodyData()
     } else {
       this.#message('error', 'No data...')
@@ -104,7 +115,7 @@ export class Processor {
 
   #processHeaders() {
     this.#headers = this.#dataInput.value.split('\n').slice(0, 1)
-    this.#headersInput.value = this.#headers
+    this.#headersInput.value = this.#headers[0].split('\t').map(x => `[${x}] `).join(' ')
     this.#width = this.#headers[0].split('\t').length
     console.log("WIDTH:", this.#width)
   }
@@ -115,7 +126,7 @@ export class Processor {
     this.#dataInput.value = body
     let outputArr = []
     let currentString = ''
-    body.forEach((x, outerIndex) => {
+    body.forEach((x) => {
       currentString = ''
       let currentRow = x.split('\t')
       currentRow = currentRow.map(x => x.trim())
@@ -132,7 +143,8 @@ export class Processor {
           currentString += ','
         }
       })
-      outputArr.push(currentString)
+      if (currentString.length >= this.#width)
+        outputArr.push(currentString)
     })
     this.#displayOutput(this.#processClosingParens(outputArr))
     this.#message('info', 'Processing complete')
