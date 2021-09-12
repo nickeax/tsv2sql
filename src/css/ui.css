@@ -36,9 +36,9 @@ button:active {
 }
 
 .add {
-  color: orange;
-  border: 1px solid orange;
-  background-color: hsla(39, 100%, 50%, 0.297);
+  color: rgb(0, 153, 255);
+  border: 1px solid rgb(0, 153, 255);
+  background-color: rgba(0, 153, 255, 0.2);
 }
 
 .delete {
