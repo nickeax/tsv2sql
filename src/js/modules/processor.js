@@ -32,10 +32,11 @@ export class Processor {
     this.#headers = str.split(' ')
   }
 
+  // External Table Reference Management
   addETR(e) {
     e.preventDefault()
     let id = this.#externalTableReferences.length
-    this.#externalTableReferences.push({ id: `${id}`, tableName: '', value: '' })
+    this.#externalTableReferences.push({ id: `${id}`, tableName: '', value: [] })
     let el = document.createElement('input')
     el.type = 'text'
     el.setAttribute(
@@ -56,9 +57,18 @@ export class Processor {
 
   ETRAddValue(e) {
     console.clear()
-    let entry = this.#externalTableReferences.find(x => x.id === e.target.id)
-    entry.value = e.target.value
+    let id = e.target.id
+    let values = e.target.value
+    let entry = this.#externalTableReferences.find(x => x.id === id)
+    if (values.split(',').length > 2) {
+      let tmpArr = values.split(',')
+      entry.tableName = tmpArr[0]
+      tmpArr = tmpArr.slice(1, tmpArr.length)
+      tmpArr = tmpArr.map(x => x.trim())
+      entry.value = tmpArr
+    }
     console.table(this.#externalTableReferences);
+    console.log(entry)
   }
 
   removeETR(id) {
@@ -103,6 +113,7 @@ export class Processor {
     body.forEach((x, outerIndex) => {
       currentString = ''
       let currentRow = x.split('\t')
+      currentRow = currentRow.map(x => x.trim())
       currentRow.forEach((y, i) => {
         if (Number.isInteger(parseInt(y)) && y.split(' ').length < 2) {
           currentString += `${y}`
@@ -175,7 +186,6 @@ export class Processor {
   }
 
   info(str) {
-    console.log(`${str}`)
     this.#messages.innerHTML = `<span class="info">${str}</span>`
   }
 
