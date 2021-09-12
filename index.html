@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./src/css/index.css" />
+    <script src="./src/js/index.js" type="module" defer></script>
+    <title></title>
+  </head>
+  <body>
+    <div class="container">
+      <form action="#">
+        <fieldset>
+          <legend>TSV to SQL</legend>
+          <div class="dataInputItem">
+            <label for="input">
+              <input
+                type="text"
+                id="headersInput"
+                placeholder="enter headers"
+              />
+            </label>
+          </div>
+
+          <div class="dataInputItem">
+            <label for="TSVDataInput">
+              <textarea
+                name="TSVDataInput"
+                id="TSVDataInput"
+                cols="30"
+                rows="10"
+                placeholder="enter data"
+              ></textarea>
+            </label>
+          </div>
+
+          <label for="process" id="process">
+            <div class="dataInputitem">
+              <button id="process">process...</button>
+            </div>
+          </label>
+        </fieldset>
+      </form>
+
+      <div class="output" id="output"></div>
+    </div>
+  </body>
+</html>
