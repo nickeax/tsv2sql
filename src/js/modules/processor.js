@@ -4,14 +4,18 @@ export class Processor {
   #headersInput
   #dataInput
   #process
+  #clear
   #messages
 
   constructor() {
     this.#headersInput = document.querySelector('#headersInput')
     this.#dataInput = document.querySelector('#TSVDataInput')
     this.#process = document.querySelector('#process')
+    this.#clear = document.querySelector('#clear')
     this.#messages = document.querySelector('#messages')
+
     this.#process.addEventListener('click', e => this.#processData(e))
+    this.#clear.addEventListener('click', e => this.#clearForm(e))
   }
 
   addHeaders(str) {
@@ -20,15 +24,22 @@ export class Processor {
 
   #processData(e) {
     e.preventDefault()
+    e.stopPropagation()
     if (this.#headersInput.value !== '' && this.#dataInput.value !== '') {
       this.#headers = this.#headersInput.value.split('\t')
     } else if (this.#dataInput.value != '') {
       this.#headers = this.#dataInput.value.split('\n')[0]
     } else {
-      this.#message('info', 'No data...')
+      this.#message('error', 'No data...')
+      return
     }
-    console.log(`Let the show begin!`)
-    this.#la()
+    this.#message('info', 'Processing...')
+  }
+
+  #clearForm(e) {
+    e.preventDefault()
+    this.#headers.value = ''
+    this.#dataInput.value = ''
   }
 
   #message(type, str) {

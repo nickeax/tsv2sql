@@ -1,0 +1,24 @@
+button {
+  padding: 1rem;
+  color: aliceblue;
+  font-weight: 700;
+}
+
+button:hover {
+  background-image: linear-gradient(
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.2)
+  );
+}
+
+button:active {
+  box-shadow: 2px 2px 2px inset rgba(0, 0, 0, 0.6);
+}
+
+.action {
+  background-color: rgb(1, 115, 177);
+}
+
+.operation {
+  background-color: rgb(1, 177, 89);
+}

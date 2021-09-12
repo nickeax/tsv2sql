@@ -1,11 +1,20 @@
+.error,
+.info {
+  display: block;
+  padding: 1rem;
+  margin: 1rem auto;
+  width: 70%;
+  text-align: center;
+  background: #fff;
+  border: 1px solid #eee;
+}
+
 .error {
-  background: #666;
   color: firebrick;
   font-weight: 800;
 }
 
 .info {
-  background: #666;
-  color: firebrick;
+  color: rgb(34, 119, 209);
   font-weight: 800;
 }

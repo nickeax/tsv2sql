@@ -1,4 +1,9 @@
-@import './messages.css' *, *: : before, *: : after {
+@import './messages.css';
+@import './ui.css';
+
+*,
+*::before,
+*::after {
   margin: 0;
   border: 0;
   box-sizing: border-box;
