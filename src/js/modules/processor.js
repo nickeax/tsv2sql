@@ -1,5 +1,6 @@
 export class Processor {
   #headers
+  #tableName = 'TABLE NAME'
   #externalTableReferences = [] // to be joined as array of objects with respective ids/indexes
   #mode
   #data
@@ -15,6 +16,7 @@ export class Processor {
 
   constructor() {
     this.#headersInput = document.querySelector('#headersInput')
+    this.#tableName = document.querySelector('#tableName')
     this.#mode = document.querySelector('#mode')
     this.#dataInput = document.querySelector('#TSVDataInput')
     this.#process = document.querySelector('#process')
@@ -179,7 +181,7 @@ export class Processor {
   }
 
   #displayOutput(arr) {
-    let str = 'INSERT INTO tableNameHere\n'
+    let str = `INSERT INTO ${this.#tableName.value}\n`
     str += this.#formatHeaders()
     str += ' VALUES \n'
     arr.forEach(x => {
