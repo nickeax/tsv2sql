@@ -1,11 +1,14 @@
 export class Processor {
   #headers = []
+  #externalTableReferences = [] // to be joined as array of objects with respective ids/indexes
   #mode
   #data
   #headersInput
   #dataInput
   #process
   #clear
+  #externalTableRef
+  #addETR
   #messages
 
   constructor() {
@@ -14,14 +17,27 @@ export class Processor {
     this.#dataInput = document.querySelector('#TSVDataInput')
     this.#process = document.querySelector('#process')
     this.#clear = document.querySelector('#clear')
+    this.#addETR = document.querySelector('#addETR')
     this.#messages = document.querySelector('#messages')
+    this.#externalTableRef = document.querySelector('#externalTableRef')
 
     this.#process.addEventListener('click', e => this.#processData(e))
     this.#clear.addEventListener('click', e => this.#clearForm(e))
+    this.#addETR.addEventListener('click', e => this.addETR(e))
   }
 
   addHeaders(str) {
     this.#headers = str.split(' ')
+  }
+
+  addETR(e) {
+    e.preventDefault()
+    this.#externalTableReferences.push({ id: `${this.#externalTableReferences.length}`, value: '' })
+    let el = document.createElement('input')
+    el.type = 'text'
+    el.id = this.#externalTableReferences.length
+    console.log(this.#externalTableReferences);
+    this.#externalTableRef.appendChild(el)
   }
 
   #processData(e) {
