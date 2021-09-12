@@ -17,11 +17,13 @@ body {
 .container {
   display: flex;
   width: 90%;
-  height: 100vh;
+  min-height: 90vh;
+  padding: 1rem;
   margin: 1rem auto;
-  background-color: #fafafa;
+  background-color: #ffffff;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  box-shadow: 0 0 23px rgba(0, 0, 0, 0.05);
 }
 
 .dataInputItem {
@@ -30,7 +32,7 @@ body {
 }
 
 fieldset {
-  border: 1px solid #ccc;
+  border: 1px solid #eee;
   width: 100%;
   border-radius: 10px;
 }
@@ -44,6 +46,6 @@ legend {
 
 input,
 textarea {
-  margin: 1rem;
+  margin: 0.6rem;
   background: #eee;
 }

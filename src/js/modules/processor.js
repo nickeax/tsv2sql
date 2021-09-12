@@ -9,6 +9,7 @@ export class Processor {
   #clear
   #externalTableRef
   #addETR
+  #etrHeading
   #messages
 
   constructor() {
@@ -20,6 +21,7 @@ export class Processor {
     this.#addETR = document.querySelector('#addETR')
     this.#messages = document.querySelector('#messages')
     this.#externalTableRef = document.querySelector('#externalTableRef')
+    this.#etrHeading = document.querySelector('#etrHeading')
 
     this.#process.addEventListener('click', e => this.#processData(e))
     this.#clear.addEventListener('click', e => this.#clearForm(e))
@@ -33,25 +35,43 @@ export class Processor {
   addETR(e) {
     e.preventDefault()
     let id = this.#externalTableReferences.length
-    this.#externalTableReferences.push({ id: `${id}`, value: '' })
+    this.#externalTableReferences.push({ id: `${id}`, tableName: '', value: '' })
     let el = document.createElement('input')
+    el.type = 'text'
+    el.setAttribute(
+      'placeholder', ` [ID-${id + 1}] Enter table name, followed by space-separated field list EX. employees id fName lName email department
+      `)
+    el.id = id
+    el.addEventListener('input', e => this.ETRAddValue(e))
+
     let delBtn = document.createElement('button')
     delBtn.innerText = 'X'
     delBtn.classList.add('delete')
     delBtn.id = `delBtn-${id}`
     delBtn.addEventListener('click', e => this.removeETR(id))
-    el.type = 'text'
-    el.id = id
-    console.log(this.#externalTableReferences);
     this.#externalTableRef.appendChild(el)
     this.#externalTableRef.appendChild(delBtn)
+    this.#etrHeading.innerText = `External Table References (${this.#externalTableReferences.length})`
+  }
+
+  ETRAddValue(e) {
+    console.clear()
+    let entry = this.#externalTableReferences.find(x => x.id === e.target.id)
+    entry.value = e.target.value
+    console.table(this.#externalTableReferences);
   }
 
   removeETR(id) {
+    console.clear()
     this.#externalTableReferences = this.#externalTableReferences.filter(x => x.id != id)
     document.getElementById(id).remove()
     document.getElementById(`delBtn-${id}`).remove()
-    console.log(this.#externalTableReferences);
+    if (this.#externalTableReferences.length < 1) {
+      this.#etrHeading.innerText = ``
+    } else {
+      this.#etrHeading.innerText = `External Table References (${this.#externalTableReferences.length})`
+    }
+    console.table(this.#externalTableReferences);
   }
 
   #processData(e) {

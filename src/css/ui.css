@@ -1,7 +1,12 @@
+form {
+  width: 100%;
+}
+
 .buttonBar {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  margin-bottom: 2rem;
 }
 
 button {
@@ -30,6 +35,12 @@ button:active {
   background-color: rgb(1, 177, 89);
 }
 
+.add {
+  color: orange;
+  border: 1px solid orange;
+  background-color: hsla(39, 100%, 50%, 0.297);
+}
+
 .delete {
   background-color: firebrick;
 }
@@ -37,6 +48,10 @@ button:active {
 input[type='text'],
 textarea {
   width: 90%;
-  padding: 10px;
+  padding: 7px;
   border: 1px solid #ddd;
+}
+
+input::placeholder {
+  color: hsl(0, 0%, 77%);
 }
