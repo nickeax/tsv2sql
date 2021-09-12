@@ -1,5 +1,6 @@
 export class Processor {
   #headers = []
+  #mode
   #data
   #headersInput
   #dataInput
@@ -9,6 +10,7 @@ export class Processor {
 
   constructor() {
     this.#headersInput = document.querySelector('#headersInput')
+    this.#mode = document.querySelector('#mode')
     this.#dataInput = document.querySelector('#TSVDataInput')
     this.#process = document.querySelector('#process')
     this.#clear = document.querySelector('#clear')
@@ -46,11 +48,73 @@ export class Processor {
     let bodyData = this.#dataInput.value.split('\n')
     let body = bodyData.slice(1, bodyData.length)
     this.#dataInput.value = body
-
+    let outputArr = []
+    let currentString = ''
+    body.forEach((x, outerIndex) => {
+      currentString = ''
+      let currentRow = x.split('\t')
+      currentRow.forEach((y, i) => {
+        if (Number.isInteger(parseInt(y)) && y.split(' ').length < 2) {
+          currentString += `${y}`
+        } else {
+          currentString += `'${y}'`
+        }
+        if (i !== currentRow.length - 1) {
+          currentString += ','
+        }
+      })
+      outputArr.push(currentString)
+    })
+    this.#displayOutput(this.#processClosingParens(outputArr))
     this.#message('info', 'Processing complete')
   }
 
+  #processClosingParens(arr) {
+    arr = arr.map((x, i) => {
+      if (i !== arr.length - 1) {
+        return `${x}),`
+      } else return `${x})`
+    })
+
+    return arr
+  }
+
+  #formatHeaders() {
+    let str = ''
+    let arr = this.#headers[0].split('\t')
+    arr = arr.map((x, i) => {
+      str = ''
+      if (i !== arr.length - 1) {
+        str += `${x}, `
+      } else {
+        str += `${x}`
+      }
+      return str
+    })
+
+    let outputStr = ''
+    arr.forEach(x => {
+      outputStr += x
+    })
+
+    return `(${outputStr})`
+  }
+
+  #displayOutput(arr) {
+    let str = 'INSERT INTO tableNameHere\n'
+    str += this.#formatHeaders()
+    str += ' VALUES \n'
+    arr.forEach(x => {
+      str += `(${x}\n`
+    })
+    str += '\n'
+
+    this.#dataInput.value = str
+    this.#mode.innerText = 'OUTPUT'
+  }
+
   #clearForm() {
+    this.#mode.innerText = 'INPUT'
     this.#headersInput.value = ''
     this.#dataInput.value = ''
     this.#messages.innerHTML = ''
