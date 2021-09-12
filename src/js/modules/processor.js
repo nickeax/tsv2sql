@@ -1,5 +1,5 @@
 export class Processor {
-  #headers = []
+  #headers
   #externalTableReferences = [] // to be joined as array of objects with respective ids/indexes
   #mode
   #data
@@ -11,6 +11,7 @@ export class Processor {
   #addETR
   #etrHeading
   #messages
+  #width
 
   constructor() {
     this.#headersInput = document.querySelector('#headersInput')
@@ -102,6 +103,8 @@ export class Processor {
   #processHeaders() {
     this.#headers = this.#dataInput.value.split('\n').slice(0, 1)
     this.#headersInput.value = this.#headers
+    this.#width = this.#headers[0].split('\t').length
+    console.log("WIDTH:", this.#width)
   }
 
   #processBodyData() {
@@ -118,7 +121,10 @@ export class Processor {
         if (Number.isInteger(parseInt(y)) && y.split(' ').length < 2) {
           currentString += `${y}`
         } else {
-          currentString += `'${y}'`
+          if (this.findReference(y, i) > 0) { // if we find a foreign key, use it instead
+            currentString += this.findReference(y, i)
+          } else
+            currentString += `'${y}'`
         }
         if (i !== currentRow.length - 1) {
           currentString += ','
@@ -128,6 +134,17 @@ export class Processor {
     })
     this.#displayOutput(this.#processClosingParens(outputArr))
     this.#message('info', 'Processing complete')
+  }
+
+  findReference(needle, index) {
+    // needle is the current row field value
+    // index can be used to find the header field value that aligns with the current row field value
+    let headerField = this.#headers[0].split('\t')[index]
+    let el = this.#externalTableReferences.find(x => x.tableName === headerField)
+    if (el?.value.length > 0) {
+      if (el.value.indexOf(needle) !== -1)
+        return el.value.indexOf(needle)
+    } return -1
   }
 
   #processClosingParens(arr) {
