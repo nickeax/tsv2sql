@@ -32,12 +32,26 @@ export class Processor {
 
   addETR(e) {
     e.preventDefault()
-    this.#externalTableReferences.push({ id: `${this.#externalTableReferences.length}`, value: '' })
+    let id = this.#externalTableReferences.length
+    this.#externalTableReferences.push({ id: `${id}`, value: '' })
     let el = document.createElement('input')
+    let delBtn = document.createElement('button')
+    delBtn.innerText = 'X'
+    delBtn.classList.add('delete')
+    delBtn.id = `delBtn-${id}`
+    delBtn.addEventListener('click', e => this.removeETR(id))
     el.type = 'text'
-    el.id = this.#externalTableReferences.length
+    el.id = id
     console.log(this.#externalTableReferences);
     this.#externalTableRef.appendChild(el)
+    this.#externalTableRef.appendChild(delBtn)
+  }
+
+  removeETR(id) {
+    this.#externalTableReferences = this.#externalTableReferences.filter(x => x.id != id)
+    document.getElementById(id).remove()
+    document.getElementById(`delBtn-${id}`).remove()
+    console.log(this.#externalTableReferences);
   }
 
   #processData(e) {

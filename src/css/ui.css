@@ -30,6 +30,10 @@ button:active {
   background-color: rgb(1, 177, 89);
 }
 
+.delete {
+  background-color: firebrick;
+}
+
 input[type='text'],
 textarea {
   width: 90%;
