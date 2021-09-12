@@ -1,5 +1,12 @@
+.buttonBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+}
+
 button {
-  padding: 1rem;
+  padding: 0.3rem 1rem;
+  margin: 0.3rem;
   color: aliceblue;
   font-weight: 700;
 }
@@ -21,4 +28,11 @@ button:active {
 
 .operation {
   background-color: rgb(1, 177, 89);
+}
+
+input[type='text'],
+textarea {
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #ddd;
 }

@@ -23,23 +23,37 @@ export class Processor {
   }
 
   #processData(e) {
+    this.#message('info', 'Processing...')
     e.preventDefault()
     e.stopPropagation()
     if (this.#headersInput.value !== '' && this.#dataInput.value !== '') {
       this.#headers = this.#headersInput.value.split('\t')
     } else if (this.#dataInput.value != '') {
-      this.#headers = this.#dataInput.value.split('\n')[0]
+      this.#processHeaders()
+      this.#processBodyData()
     } else {
       this.#message('error', 'No data...')
       return
     }
-    this.#message('info', 'Processing...')
   }
 
-  #clearForm(e) {
-    e.preventDefault()
-    this.#headers.value = ''
+  #processHeaders() {
+    this.#headers = this.#dataInput.value.split('\n').slice(0, 1)
+    this.#headersInput.value = this.#headers
+  }
+
+  #processBodyData() {
+    let bodyData = this.#dataInput.value.split('\n')
+    let body = bodyData.slice(1, bodyData.length)
+    this.#dataInput.value = body
+
+    this.#message('info', 'Processing complete')
+  }
+
+  #clearForm() {
+    this.#headersInput.value = ''
     this.#dataInput.value = ''
+    this.#messages.innerHTML = ''
   }
 
   #message(type, str) {
@@ -47,6 +61,7 @@ export class Processor {
   }
 
   info(str) {
+    console.log(`${str}`)
     this.#messages.innerHTML = `<span class="info">${str}</span>`
   }
 
