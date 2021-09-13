@@ -70,6 +70,7 @@ export class Processor {
     el.setAttribute(
       'placeholder', ` [ID-${id + 1}] Enter table name, followed by comma-separated field list EX. employees, id, fName, lName, email, department
       `)
+    el.setAttribute('title', 'This will allow your generated query to replace field values with foreign keys')
     el.id = id
     el.addEventListener('input', e => this.ETRAddValue(e))
 
@@ -77,6 +78,7 @@ export class Processor {
     delBtn.innerText = 'X'
     delBtn.classList.add('delete')
     delBtn.id = `delBtn-${id}`
+    delBtn.setAttribute('title', `Remove external reference: [ID:${id + 1}]`)
     delBtn.addEventListener('click', e => this.removeETR(id))
     this.#externalTableRef.appendChild(el)
     this.#externalTableRef.appendChild(delBtn)
