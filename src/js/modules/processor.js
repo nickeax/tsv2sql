@@ -154,10 +154,11 @@ export class Processor {
         if (Number.isInteger(parseInt(y)) && y.split(' ').length < 2) {
           currentString += `${y}`
         } else {
-          if (this.findReference(y, i) > 0) { // if we find a foreign key, use it instead
+          if (this.findReference(y, i) >= 0) { // if we find a foreign key, use it instead
             currentString += this.findReference(y, i)
-          } else
+          } else {
             currentString += `'${y}'`
+          }
         }
         if (i !== currentRow.length - 1) {
           currentString += ','
@@ -173,7 +174,7 @@ export class Processor {
   findReference(needle, index) {
     // needle is the current row field value
     // index can be used to find the header field value that aligns with the current row field value
-    let headerField = this.#headers[0].split(this.#delimeterType)[index]
+    let headerField = this.#headers[0].split(',')[index]
     let el = this.#externalTableReferences.find(x => x.tableName === headerField)
     if (el?.value.length > 0) {
       if (el.value.indexOf(needle) !== -1)
