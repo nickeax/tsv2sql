@@ -9,6 +9,8 @@ export class Processor {
   #originalData
   #delimeter
   #delimeterType
+  #addOffset
+  #addOffsetValue = 1
   #process
   #reset
   #clear
@@ -34,12 +36,14 @@ export class Processor {
     this.#externalTableRef = document.querySelector('#externalTableRef')
     this.#etrHeading = document.querySelector('#etrHeading')
     this.#copyrightInfo = document.querySelector('#copyrightInfo')
+    this.#addOffset = document.querySelector('#addOffset')
 
     let date = new Date()
     let year = date.getFullYear()
     this.#copyrightInfo.innerHTML = `&#169; ${year} Nick Fletcher`
 
     this.#delimeter.addEventListener('input', e => this.#updateDelimeter(e))
+    this.#addOffset.addEventListener('input', e => this.#updateOffsetValue(e))
     this.#process.addEventListener('click', e => this.#processData(e))
     this.#reset.addEventListener('click', e => this.#resetData(e))
     this.#clear.addEventListener('click', e => this.#clearForm(e))
@@ -66,11 +70,19 @@ export class Processor {
         break
     }
   }
+
+  #updateOffsetValue(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    if (e.target.value) {
+      this.#addOffsetValue = parseInt(this.#addOffset.value)
+    } else this.#addOffsetValue = 1
+  }
   // External Table Reference Management
   addETR(e) {
     e.preventDefault()
     let id = this.#externalTableReferences.length
-    this.#externalTableReferences.push({ id: `${id}`, tableName: '', value: [] })
+    this.#externalTableReferences.push({ id: `${id}`, tableName: '', value: [], offset: 1 })
     let el = document.createElement('input')
     el.type = 'text'
     el.setAttribute(
@@ -80,6 +92,13 @@ export class Processor {
     el.id = id
     el.addEventListener('input', e => this.ETRAddValue(e))
 
+    let indiOffset = document.createElement('input')
+    indiOffset.setAttribute('type', 'number')
+    indiOffset.setAttribute('id', `indiOffset-${id}`)
+    indiOffset.classList.add('indiOffset')
+    indiOffset.setAttribute('placeholder', 'id offset')
+    indiOffset.addEventListener('input', e => this.ETRAddOffset(e))
+
     let delBtn = document.createElement('button')
     delBtn.innerText = 'X'
     delBtn.classList.add('delete')
@@ -87,8 +106,18 @@ export class Processor {
     delBtn.setAttribute('title', `Remove external reference: [ID:${id + 1}]`)
     delBtn.addEventListener('click', e => this.removeETR(id))
     this.#externalTableRef.appendChild(el)
+    this.#externalTableRef.appendChild(indiOffset)
     this.#externalTableRef.appendChild(delBtn)
     this.#etrHeading.innerText = `External Table References (${this.#externalTableReferences.length})`
+  }
+
+  ETRAddOffset(e) {
+    e.preventDefault()
+    let id = e.target.id.split('-')[1]
+    let val = parseInt(e.target.value)
+    let entry = this.#externalTableReferences.find(x => x.id === id)
+    entry.offset = val
+    console.log(entry);
   }
 
   ETRAddValue(e) {
@@ -109,6 +138,7 @@ export class Processor {
     this.#externalTableReferences = this.#externalTableReferences.filter(x => x.id != id)
     document.getElementById(id).remove()
     document.getElementById(`delBtn-${id}`).remove()
+    document.getElementById(`indiOffset-${id}`).remove()
     if (this.#externalTableReferences.length < 1) {
       this.#etrHeading.innerText = ``
     } else {
@@ -155,7 +185,8 @@ export class Processor {
           currentString += `${y}`
         } else {
           if (this.findReference(y, i) >= 0) { // if we find a foreign key, use it instead
-            currentString += this.findReference(y, i)
+            currentString += this.findReference(y, i) + this.#addOffsetValue
+            console.log(currentString);
           } else {
             currentString += `'${y}'`
           }
@@ -178,7 +209,7 @@ export class Processor {
     let el = this.#externalTableReferences.find(x => x.tableName === headerField)
     if (el?.value.length > 0) {
       if (el.value.indexOf(needle) !== -1)
-        return el.value.indexOf(needle)
+        return el.value.indexOf(needle) + el.offset
     } return -1
   }
 

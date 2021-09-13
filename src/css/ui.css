@@ -19,21 +19,24 @@ label {
 .cautionButtons {
   display: flex;
   align-items: center;
-  width: 48%;
   /* border: 1px solid red; */
 }
 
 span.normalButtons {
-  justify-content: space-around;
+  width: 70%;
+}
+
+span.cautionButtons {
+  width: 30%;
+}
+
+span.normalButtons {
+  justify-content: start;
   margin: auto;
 }
 
 span.cautionButtons {
-  justify-content: center;
-}
-
-#clear {
-  align-self: flex-end;
+  justify-content: start;
 }
 
 select {
@@ -94,10 +97,25 @@ button:active {
   background-color: firebrick;
 }
 
+input[type='number'] {
+  padding: 2px;
+  text-align: center;
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: #eee;
+  background-color: rgb(39, 35, 35);
+  width: 5rem;
+}
+
+input[type='number']::placeholder {
+  text-align: center;
+  color: #666;
+}
+
 input[type='text'],
 textarea {
   font-family: monospace;
-  width: 90%;
+  width: 80%;
   padding: 7px;
   border: 1px solid #ddd;
 }

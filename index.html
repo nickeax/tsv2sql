@@ -55,14 +55,14 @@
                   <option value="pipes">pipes (|)</option>
                 </select>
               </label>
-              <label for="reset">
-                <button
-                  class="operation"
-                  id="reset"
-                  title="Bring back original data for editing"
-                >
-                  reset
-                </button>
+              <label for="addOffset">
+                <input
+                  type="number"
+                  name="addOffset"
+                  id="addOffset"
+                  placeholder="ref table offset"
+                  title="Enter a number to be used as a global offset for foreign key IDs"
+                />
               </label>
               <label for="addETR">
                 <button
@@ -71,6 +71,18 @@
                   title="This will allow your generated query to replace field values with foreign keys"
                 >
                   add reference table
+                </button>
+              </label>
+            </span>
+
+            <span class="cautionButtons">
+              <label for="reset">
+                <button
+                  class="caution"
+                  id="reset"
+                  title="Bring back original data for editing"
+                >
+                  reset
                 </button>
               </label>
               <label for="process">
@@ -82,9 +94,6 @@
                   process...
                 </button>
               </label>
-            </span>
-
-            <span class="cautionButtons">
               <label for="clear">
                 <button class="danger" id="clear">clear</button>
               </label>
