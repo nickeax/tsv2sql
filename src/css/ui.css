@@ -2,20 +2,51 @@ form {
   width: 100%;
 }
 
+label {
+  color: #aaa;
+}
+
 .buttonBar {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  width: 100%;
+  justify-content: space-around;
   align-items: center;
   margin-bottom: 2rem;
 }
+
+.normalButtons,
+.cautionButtons {
+  display: flex;
+  align-items: center;
+  width: 48%;
+  /* border: 1px solid red; */
+}
+
+span.normalButtons {
+  justify-content: space-around;
+  margin: auto;
+}
+
+span.cautionButtons {
+  justify-content: center;
+}
+
+#clear {
+  align-self: flex-end;
+}
+
+select {
+  background-color: #eee;
+  text-align: center;
+  border-style: none;
+  border: none;
+}
+
 select,
 option {
-  color: black;
+  color: #666;
   padding: 5px;
-}
-select option {
-  padding: 2px;
 }
 
 button {
@@ -38,10 +69,20 @@ button:active {
 
 .action {
   background-color: rgb(1, 115, 177);
+  width: 150px;
 }
 
 .operation {
   background-color: rgb(1, 177, 89);
+}
+
+.caution {
+  background-color: rgb(226, 220, 25);
+}
+
+.danger {
+  margin-left: 10rem;
+  background-color: rgb(226, 38, 25);
 }
 
 .add {
@@ -56,6 +97,7 @@ button:active {
 
 input[type='text'],
 textarea {
+  font-family: monospace;
   width: 90%;
   padding: 7px;
   border: 1px solid #ddd;

@@ -6,9 +6,11 @@ export class Processor {
   #data
   #headersInput
   #dataInput
+  #originalData
   #delimeter
   #delimeterType
   #process
+  #reset
   #clear
   #externalTableRef
   #addETR
@@ -24,6 +26,7 @@ export class Processor {
     this.#dataInput = document.querySelector('#TSVDataInput')
     this.#delimeter = document.querySelector('#delimeter')
     this.#process = document.querySelector('#process')
+    this.#reset = document.querySelector('#reset')
     this.#clear = document.querySelector('#clear')
     this.#addETR = document.querySelector('#addETR')
     this.#messages = document.querySelector('#messages')
@@ -32,6 +35,7 @@ export class Processor {
 
     this.#delimeter.addEventListener('input', e => this.#updateDelimeter(e))
     this.#process.addEventListener('click', e => this.#processData(e))
+    this.#reset.addEventListener('click', e => this.#resetData(e))
     this.#clear.addEventListener('click', e => this.#clearForm(e))
     this.#addETR.addEventListener('click', e => this.addETR(e))
   }
@@ -42,8 +46,19 @@ export class Processor {
         break
       case 'commas': this.#delimeterType = ','
         break
+      case 'dashes': this.#delimeterType = '-'
+        break
+      case 'underscores': this.#delimeterType = '_'
+        break
+      case 'periods': this.#delimeterType = '.'
+        break
+      case 'slashes': this.#delimeterType = '\\'
+        break
+      case 'asterix': this.#delimeterType = '*'
+        break
+      case 'pipes': this.#delimeterType = '|'
+        break
     }
-    console.log(this.#delimeterType);
   }
   // External Table Reference Management
   addETR(e) {
@@ -53,7 +68,7 @@ export class Processor {
     let el = document.createElement('input')
     el.type = 'text'
     el.setAttribute(
-      'placeholder', ` [ID-${id + 1}] Enter table name, followed by space-separated field list EX. employees id fName lName email department
+      'placeholder', ` [ID-${id + 1}] Enter table name, followed by comma-separated field list EX. employees, id, fName, lName, email, department
       `)
     el.id = id
     el.addEventListener('input', e => this.ETRAddValue(e))
@@ -69,7 +84,6 @@ export class Processor {
   }
 
   ETRAddValue(e) {
-    console.clear()
     let id = e.target.id
     let values = e.target.value
     let entry = this.#externalTableReferences.find(x => x.id === id)
@@ -80,8 +94,6 @@ export class Processor {
       tmpArr = tmpArr.map(x => x.trim())
       entry.value = tmpArr
     }
-    console.table(this.#externalTableReferences);
-    console.log(entry)
   }
 
   removeETR(id) {
@@ -101,8 +113,9 @@ export class Processor {
     this.#message('info', 'Processing...')
     e.preventDefault()
     e.stopPropagation()
+    this.#originalData = this.#dataInput.value
     if (this.#headersInput.value !== '' && this.#dataInput.value !== '') {
-      this.#headers = this.#headersInput.value.split('\t')
+      this.#headers = this.#headersInput.value.split(this.#delimeterType)
     } else if (this.#dataInput.value != '') {
       this.#processHeaders()
       this.#headersInput.classList.toggle('hidden')
@@ -115,9 +128,8 @@ export class Processor {
 
   #processHeaders() {
     this.#headers = this.#dataInput.value.split('\n').slice(0, 1)
-    this.#headersInput.value = this.#headers[0].split('\t').map(x => `[${x}] `).join(' ')
-    this.#width = this.#headers[0].split('\t').length
-    console.log("WIDTH:", this.#width)
+    this.#headersInput.value = this.#headers[0].split(this.#delimeterType).map(x => `[${x}] `).join(' ')
+    this.#width = this.#headers[0].split(this.#delimeterType).length
   }
 
   #processBodyData() {
@@ -128,7 +140,7 @@ export class Processor {
     let currentString = ''
     body.forEach((x) => {
       currentString = ''
-      let currentRow = x.split('\t')
+      let currentRow = x.split(this.#delimeterType)
       currentRow = currentRow.map(x => x.trim())
       currentRow.forEach((y, i) => {
         if (Number.isInteger(parseInt(y)) && y.split(' ').length < 2) {
@@ -153,7 +165,7 @@ export class Processor {
   findReference(needle, index) {
     // needle is the current row field value
     // index can be used to find the header field value that aligns with the current row field value
-    let headerField = this.#headers[0].split('\t')[index]
+    let headerField = this.#headers[0].split(this.#delimeterType)[index]
     let el = this.#externalTableReferences.find(x => x.tableName === headerField)
     if (el?.value.length > 0) {
       if (el.value.indexOf(needle) !== -1)
@@ -173,7 +185,7 @@ export class Processor {
 
   #formatHeaders() {
     let str = ''
-    let arr = this.#headers[0].split('\t')
+    let arr = this.#headers[0].split(this.#delimeterType)
     arr = arr.map((x, i) => {
       str = ''
       if (i !== arr.length - 1) {
@@ -205,9 +217,28 @@ export class Processor {
     this.#mode.innerText = 'OUTPUT'
   }
 
-  #clearForm() {
+  #resetData(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    if (this.#originalData) {
+      console.log(this.#originalData)
+      this.#dataInput.value = ''
+      this.#mode.innerText = 'INPUT'
+      this.#headersInput.value = ''
+      this.#dataInput.value = this.#originalData
+      this.#messages.innerHTML = ''
+      this.#headersInput.classList.toggle('hidden')
+    } else {
+      this.#dataInput.value = 'Original data lost...'
+    }
+  }
+
+  #clearForm(e) {
+    e.preventDefault()
+    e.stopPropagation()
     this.#mode.innerText = 'INPUT'
     this.#headersInput.value = ''
+    this.#originalData = this.#dataInput.value
     this.#dataInput.value = ''
     this.#messages.innerHTML = ''
   }
