@@ -8,7 +8,7 @@ export class Processor {
   #dataInput
   #originalData
   #delimeter
-  #delimeterType
+  #delimeterType = ','
   #addOffset
   #addOffsetValue = 1
   #process
@@ -97,6 +97,7 @@ export class Processor {
     indiOffset.setAttribute('id', `indiOffset-${id}`)
     indiOffset.classList.add('indiOffset')
     indiOffset.setAttribute('placeholder', 'id offset')
+    indiOffset.setAttribute('title', 'This offset will be applied to the foreign key of the reference table')
     indiOffset.addEventListener('input', e => this.ETRAddOffset(e))
 
     let delBtn = document.createElement('button')
@@ -135,6 +136,7 @@ export class Processor {
 
   removeETR(id) {
     console.clear()
+    if (!confirm(`Are you sure you wish to External Table (ID: ${id + 1})?`)) return
     this.#externalTableReferences = this.#externalTableReferences.filter(x => x.id != id)
     document.getElementById(id).remove()
     document.getElementById(`delBtn-${id}`).remove()
@@ -276,6 +278,7 @@ export class Processor {
   #clearForm(e) {
     e.preventDefault()
     e.stopPropagation()
+    if (!confirm(`Are you sure you wish to clear all existing data?`)) return
     this.#mode.innerText = 'INPUT'
     this.#headersInput.value = ''
     this.#originalData = this.#dataInput.value

@@ -7,12 +7,34 @@ label {
 }
 
 .buttonBar {
-  display: flex;
-  flex-direction: row;
+  /* display: flex;
+  flex-direction: row; */
   width: 100%;
   justify-content: space-around;
   align-items: center;
   margin-bottom: 2rem;
+}
+
+.row1,
+.row2 {
+  display: flex;
+}
+
+.row1 {
+  flex-direction: column;
+  width: 100%;
+  justify-content: left;
+  margin-bottom: 1rem;
+}
+
+.row2 {
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+}
+
+.addGlobalOffset {
+  width: 10rem;
 }
 
 .normalButtons,
@@ -20,23 +42,6 @@ label {
   display: flex;
   align-items: center;
   /* border: 1px solid red; */
-}
-
-span.normalButtons {
-  width: 70%;
-}
-
-span.cautionButtons {
-  width: 30%;
-}
-
-span.normalButtons {
-  justify-content: start;
-  margin: auto;
-}
-
-span.cautionButtons {
-  justify-content: start;
 }
 
 select {
@@ -53,6 +58,7 @@ option {
 }
 
 button {
+  width: 10rem;
   padding: 0.3rem 1rem;
   margin: 0.3rem;
   color: aliceblue;
@@ -79,11 +85,10 @@ button:active {
 }
 
 .caution {
-  background-color: rgb(226, 220, 25);
+  background-color: hsl(31, 100%, 47%);
 }
 
 .danger {
-  margin-left: 10rem;
   background-color: rgb(226, 38, 25);
 }
 
@@ -103,13 +108,13 @@ input[type='number'] {
   font-family: monospace;
   font-size: 0.7rem;
   color: #eee;
-  background-color: rgb(39, 35, 35);
+  background-color: rgb(108, 110, 111);
   width: 5rem;
 }
 
 input[type='number']::placeholder {
   text-align: center;
-  color: #666;
+  color: rgb(255, 255, 255);
 }
 
 input[type='text'],
@@ -134,4 +139,8 @@ textarea {
 
 .hidden {
   display: none;
+}
+
+label {
+  margin: 0 1rem;
 }
