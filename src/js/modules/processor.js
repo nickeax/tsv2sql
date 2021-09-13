@@ -17,6 +17,7 @@ export class Processor {
   #etrHeading
   #messages
   #width
+  #copyrightInfo
 
   constructor() {
     this.#headersInput = document.querySelector('#headersInput')
@@ -32,6 +33,11 @@ export class Processor {
     this.#messages = document.querySelector('#messages')
     this.#externalTableRef = document.querySelector('#externalTableRef')
     this.#etrHeading = document.querySelector('#etrHeading')
+    this.#copyrightInfo = document.querySelector('#copyrightInfo')
+
+    let date = new Date()
+    let year = date.getFullYear()
+    this.#copyrightInfo.innerHTML = `&#169; ${year} Nick Fletcher`
 
     this.#delimeter.addEventListener('input', e => this.#updateDelimeter(e))
     this.#process.addEventListener('click', e => this.#processData(e))

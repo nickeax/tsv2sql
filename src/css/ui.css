@@ -106,6 +106,14 @@ input::placeholder {
   color: hsl(0, 0%, 77%);
 }
 
+input,
+textarea {
+  margin: 0.6rem;
+  background: #eee;
+  border: 1px solid #aaa;
+  box-shadow: 2px 2px 2px inset rgba(0, 0, 0, 0.09);
+}
+
 .hidden {
   display: none;
 }

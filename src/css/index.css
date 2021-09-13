@@ -45,10 +45,9 @@ legend {
   border-radius: 20px;
 }
 
-input,
-textarea {
-  margin: 0.6rem;
-  background: #eee;
-  border: 1px solid #aaa;
-  box-shadow: 2px 2px 2px inset rgba(0, 0, 0, 0.09);
+footer {
+  color: #ddd;
+  width: 70%;
+  margin: 0 auto;
+  text-align: right;
 }
