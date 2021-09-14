@@ -129,7 +129,7 @@ export class Processor {
       let tmpArr = values.split(',')
       entry.tableName = tmpArr[0]
       tmpArr = tmpArr.slice(1, tmpArr.length)
-      tmpArr = tmpArr.map(x => x.trim())
+      tmpArr = tmpArr.map(x => this.myTrim(x))
       entry.value = tmpArr
     }
   }
@@ -168,7 +168,7 @@ export class Processor {
 
   #processHeaders() {
     this.#headers = this.#dataInput.value.split('\n').slice(0, 1)
-    this.#headersInput.value = this.#headers[0].split(this.#delimeterType).map(x => `[${x}] `).join(' ')
+    this.#headersInput.value = this.#headers[0].split(this.#delimeterType).map(x => `[${this.myTrim(x)}] `).join('')
     this.#width = this.#headers[0].split(this.#delimeterType).length
   }
 
@@ -181,7 +181,7 @@ export class Processor {
     body.forEach((x) => {
       currentString = ''
       let currentRow = x.split(this.#delimeterType)
-      currentRow = currentRow.map(x => x.trim())
+      currentRow = currentRow.map(x => this.myTrim(x))
       currentRow.forEach((y, i) => {
         if (Number.isInteger(parseInt(y)) && y.split(' ').length < 2) {
           currentString += `${y}`
@@ -207,7 +207,9 @@ export class Processor {
   findReference(needle, index) {
     // needle is the current row field value
     // index can be used to find the header field value that aligns with the current row field value
+    needle = this.myTrim(needle)
     let headerField = this.#headers[0].split(',')[index]
+    headerField = this.myTrim(headerField)
     let el = this.#externalTableReferences.find(x => x.tableName === headerField)
     if (el?.value.length > 0) {
       if (el.value.indexOf(needle) !== -1)
@@ -301,5 +303,9 @@ export class Processor {
   #la() {
     console.log(`[processor]\t\theaders: ${this.#headers}`)
     console.log(`[processor]\t\tdata: ${this.#data}`)
+  }
+
+  myTrim(str) {
+    return str.split(' ').filter(x => x !== '').join(' ')
   }
 }
