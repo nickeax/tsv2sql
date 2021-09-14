@@ -10,7 +10,7 @@ label {
   /* display: flex;
   flex-direction: row; */
   width: 100%;
-  justify-content: space-around;
+  justify-content: left;
   align-items: center;
   margin-bottom: 2rem;
 }
@@ -23,7 +23,7 @@ label {
 .row1 {
   flex-direction: column;
   width: 100%;
-  justify-content: left;
+  justify-content: center;
   margin-bottom: 1rem;
 }
 
@@ -41,7 +41,7 @@ label {
 .cautionButtons {
   display: flex;
   align-items: center;
-  /* border: 1px solid red; */
+  border: 1px solid red;
 }
 
 select {
@@ -62,13 +62,13 @@ button {
   padding: 0.3rem 1rem;
   margin: 0.3rem;
   color: aliceblue;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 button:hover {
   background-image: linear-gradient(
-    rgba(255, 255, 255, 0.2),
-    rgba(255, 255, 255, 0.2)
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.1)
   );
 }
 
@@ -135,6 +135,11 @@ textarea {
   background: #eee;
   border: 1px solid #aaa;
   box-shadow: 2px 2px 2px inset rgba(0, 0, 0, 0.09);
+}
+
+textarea {
+  height: 30vh;
+  width: 80%;
 }
 
 .hidden {

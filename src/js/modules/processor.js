@@ -30,6 +30,7 @@ export class Processor {
     this.#delimeter = document.querySelector('#delimeter')
     this.#process = document.querySelector('#process')
     this.#reset = document.querySelector('#reset')
+    this.#reset.classList.add('hidden')
     this.#clear = document.querySelector('#clear')
     this.#addETR = document.querySelector('#addETR')
     this.#messages = document.querySelector('#messages')
@@ -153,12 +154,14 @@ export class Processor {
     this.#message('info', 'Processing...')
     e.preventDefault()
     e.stopPropagation()
+    this.#process.classList.toggle('hidden')
+    this.#reset.classList.toggle('hidden')
     this.#originalData = this.#dataInput.value
     if (this.#headersInput.value !== '' && this.#dataInput.value !== '') {
       this.#headers = this.#headersInput.value.split(this.#delimeterType)
     } else if (this.#dataInput.value != '') {
       this.#processHeaders()
-      this.#headersInput.classList.toggle('hidden')
+      // this.#headersInput.classList.toggle('hidden')
       this.#processBodyData()
     } else {
       this.#message('error', 'No data...')
@@ -264,6 +267,8 @@ export class Processor {
   #resetData(e) {
     e.preventDefault()
     e.stopPropagation()
+    this.#process.classList.toggle('hidden')
+    this.#reset.classList.toggle('hidden')
     if (this.#originalData) {
       console.log(this.#originalData)
       this.#dataInput.value = ''
@@ -271,7 +276,7 @@ export class Processor {
       this.#headersInput.value = ''
       this.#dataInput.value = this.#originalData
       this.#messages.innerHTML = ''
-      this.#headersInput.classList.toggle('hidden')
+      // this.#headersInput.classList.toggle('hidden')
     } else {
       this.#dataInput.value = 'Original data lost...'
     }
