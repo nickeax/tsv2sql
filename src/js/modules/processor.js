@@ -311,6 +311,8 @@ export class Processor {
   }
 
   myTrim(str) {
-    return str.split(' ').filter(x => x !== '').join(' ')
+    if (str) {
+      return str.split(' ').filter(x => x !== '').join(' ')
+    }
   }
 }
